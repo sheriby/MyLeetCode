@@ -6,22 +6,14 @@ using namespace std;
 class Solution {
    public:
     int lengthOfLongestSubstring(string s) {
-        int len = s.size();
-        if (len < 2) return len;
-
-        int left = 0, right = 1, max_seq = 1;
-        while (right < len) {
-            bool find = false;
-            for (int i = left; i < right; i++) {
-                if (s[i] == s[right]) {
-                    left = i + 1;
-                    find = true;
-                    break;
-                }
-            }
-            if (!find) max_seq = max(max_seq, right - left + 1);
-            right++;
+        int n = s.size(), i = 0, j = 0, ans = 0;
+        vector<int> hash(128, -1);
+        while (j < n) {
+            if (hash[s[j]] != -1) i = max(hash[s[j]] + 1, i);
+            hash[s[j]] = j;
+            ans = max(ans, j - i + 1);
+            j++;
         }
-        return max_seq;
+        return ans;
     }
 };
